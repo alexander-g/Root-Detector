@@ -1,7 +1,6 @@
 {% import   'base/top_menu.html'        as base_top_menu %}
 
 
-
 {% macro load_exclude_masks_item(app) %}
 <label for="input_masks" class="ui icon item">
     <i class="images red icon"></i>
@@ -16,5 +15,4 @@
 {% macro top_menu(app) %}
 {{ base_top_menu.top_menu(app, filemenu_extras=load_exclude_masks_item(app)) }}
 {% endmacro %}
-
 

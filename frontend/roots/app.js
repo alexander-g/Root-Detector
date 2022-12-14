@@ -11,4 +11,7 @@ RootDetectorApp = class extends BaseApp {
 
 //override
 GLOBAL.App = RootDetectorApp;
-App        = RootDetectorApp;
+App = RootDetectorApp;
+
+// Default model type
+GLOBAL.model_type = 'detection';

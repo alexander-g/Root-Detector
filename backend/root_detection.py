@@ -29,8 +29,11 @@ def process_image(image_path:str, settings:'backend.Settings') -> dict:
 
 
 def postprocess_segmentation_file(path:str) -> dict:
-    assert path.endswith('.segmentation.png')
-    image_path   = path.replace('.segmentation.png', '')
+    assert (path.endswith('.segmentation.png') or path.endswith('.annotation.png'))
+    if path.endswith('.segmentation.png'):
+        image_path   = path.replace('.segmentation.png', '')
+    elif path.endswith('.annotation.png'):
+        image_path   = path.replace('.annotation.png', '')   
     segmentation = PIL.Image.open(path).convert('RGB') / np.float32(255)
     segmentation = result_from_rgb(segmentation)
 

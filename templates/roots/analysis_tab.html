@@ -1,0 +1,19 @@
+{% import 'base/main_container.html' as base_main_container %}
+{% from   'roots/tracking_tab.html'  import tracking_tab %}
+{% from   'roots/training_tab.html'  import training_tab as roots_training_tab %}
+
+
+{% macro sub_tabs_analysis() %}
+<div class="ui pointing secondary tabs menu">
+    <a class="active item" data-tab="detection"> Detection</a>
+    <a class="item"        data-tab="tracking">  Tracking </a>
+</div>
+{% endmacro %}
+
+{% macro analysis_container(app) %}
+    {{ base_main_container.sub_main_container( 
+        app, 
+        tabs          = sub_tabs_analysis(), 
+        extra         = tracking_tab() 
+    ) }}
+{% endmacro %}

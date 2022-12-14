@@ -1,0 +1,28 @@
+{% macro help_tab() %}
+<div class="ui tab segment" data-tab="help" style="background-color: #f8f8f9
+;">
+    <h1>Help</h1>
+        <h3>How do I choose the correct model?</h3>
+        In order to analyze your root images you first want to select an appropriate model and optionally an exclusion mask model. This can be done in the settings menu. The detection model can also be chosen from the Model Selection tab which gives information regarding the models in order to help you choose. The model that you choose will then be used for analysis, or as the starting point for training.
+        <p></p>
+        <h3>What is an detection model?</h3>
+        The detection model takes root pictures from a minirhizotrons tube and labels the pixels which cover roots. When you perform analysis on your pictures this model will be used both for root detection and tracking. There exists many models which have better performance under certain conditions. Thus you should verify in the Model Selection tab that you use a model trained under conditions close to those your images where taken in.
+        <p></p>
+        <h3>What is an exclusion mask?</h3>
+        The exclusion mask is a mask that identifies and labels pixels on foreign objects such as tape. This model is enabled through the settings modal.
+        <p></p>
+        <h3> What name format should my images have? </h3>
+        The file names should follow the format: <p><strong> Experiment_tube number_location number_date_time_session number</strong></p>
+        where:
+        <ul>   
+          <li>Experiment: name of the experiment that the image is taken in </li>
+          <li>Tube number: signifies the tube or experimental plot that the image is from </li>
+          <li>Location: position of image within the tube, typically this raises from 1-5 (but can be less if shorter tubes are used) with 1 being the topmost image </li>
+          <li>Session number: usually, repeated measurements are done in the same tubes with the first time being called session “1” etc. </li>
+        </ul>
+        An example of an appropriately named image is: <strong>BH_T011_L001_04.06.20_121601_001</strong>.
+    <p></p>
+    <h3></h3>
+    <p></p>
+</div>
+{% endmacro%}

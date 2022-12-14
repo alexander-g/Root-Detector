@@ -1,8 +1,8 @@
 import numpy as np
 import PIL.Image
 import zipfile, os, io
-
-
+import math
+from base.backend.app import get_cache_path
 
 def evaluate_single_file(predictionfile:str, annotationfile:str) -> dict:
     ypred = load_segmentationfile(predictionfile)
@@ -17,6 +17,44 @@ def evaluate_single_file(predictionfile:str, annotationfile:str) -> dict:
     result.update(precision_recall(ytrue, ypred))
     return result
 
+def evaluate_files(basenamepath:list,name_add_on = '') -> dict:
+    IoUavg = 0
+    precisionavg = 0
+    recallavg = 0
+    f1avg = 0
+    for f in basenamepath:
+        ypred = load_segmentationfile(f'{get_cache_path(name_add_on+f)}.segmentation.png')
+        ytrue = load_segmentationfile(f'{get_cache_path(name_add_on+f)}.annotation.png')
+        IoU_temp = IoU(ytrue, ypred)
+        if not math.isnan(IoUavg):
+            IoUavg += IoU_temp
+
+        em = create_error_map(ytrue, ypred)
+        save_error_map_as_png(em,f'{get_cache_path(f)}.error_map.png' )
+        data = precision_recall(ytrue, ypred)
+
+        if not math.isnan(data['precision']):
+            precisionavg += data['precision']
+        if not math.isnan(data['recall']):
+            recallavg += data['recall']
+        if not math.isnan(data['F1']):
+            f1avg += data['F1']
+
+    N = len(basenamepath)
+    IoUavg = IoUavg/N
+    precisionavg = precisionavg/N
+    recallavg = recallavg/N
+    f1avg = f1avg/N
+
+    result = {
+        'IoU'                : IoUavg,
+        'Precision'          : precisionavg,
+        'recall'             : recallavg,
+        'F1'                 : f1avg,
+
+    }
+    return result
+    
 def load_segmentationfile(filename:str) -> np.array:
     image = PIL.Image.open(filename).convert('RGB') * np.uint8(1)
     return np.all(image == (255, 255, 255), axis=-1)
@@ -100,9 +138,24 @@ def results_to_csv(results:list) -> str:
         assert len(csv_data[-1]) == len(csv_header)
     return '\n'.join([', '.join(linedata) for linedata in ([csv_header] + csv_data)])
     
-def error_map_to_png(error_map:np.array) -> bytes:
+def error_map_to_png(error_map:np.array,path) -> bytes:
     error_map = PIL.Image.fromarray( (error_map*255).astype('uint8') )
     buffer    = io.BytesIO()
     error_map.save(buffer, format='png')
-    buffer.seek(0);
+    error_map.save(path)
+    buffer.seek(0)
     return buffer.read()
+    
+def save_error_map_as_png(error_map:np.array,path:str) -> bytes:
+    error_map = PIL.Image.fromarray( (error_map*255).astype('uint8') )
+    buffer    = io.BytesIO()
+    error_map.save(buffer, format='png')
+    error_map.save(path)
+    return 'yay'
+
+def load_annotated_mask(path):
+        mask = PIL.Image.open(path).convert('RGB') / np.float32(255)
+        #convert rgb to binary array
+        mask = np.any(mask, axis=-1)
+        return mask
+

@@ -15,25 +15,38 @@ RootsFileInput = class extends BaseFileInput{
         const candidate_names = [
             inputfilename  +'.segmentation.png',
             no_ext_filename+'.segmentation.png',
+            inputfilename  +'.annotation.png',
+            no_ext_filename+'.annotation.png',
             no_ext_filename+'.png',
         ]
         return (candidate_names.indexOf(basename) != -1)
     }
 
     //override
-    static async load_result(filename, resultfiles){
-        console.log(filename, resultfiles)
-        const inputfile = GLOBAL.files[filename]
+    static async load_result(filename, resultfiles,id){
+        if ((id !="training_image_annotation")&& (id != "training_images")){
+            var inputfile = GLOBAL.files[filename]
+            var aftertext = `.segmentation.png`
+        }
+        else{
+            var inputfile = GLOBAL.trainingfiles[filename] 
+            aftertext = `.annotation.png`
+        }
         if(inputfile != undefined){
             const resultfile = new File(
                 //consistent file name
-                [resultfiles[0]], `${filename}.segmentation.png`, {type:'image/png'}
+                [resultfiles[0]], `${filename}${aftertext}`, {type:'image/png'}
             )
 
             //upload to flask & postprocess
             await upload_file_to_flask(resultfile)
-            const result = await $.get(`/postprocess_detection/${resultfile.name}`)
-            await App.Detection.set_results(filename, result)
+            if ((id !="training_image_annotation")&& (id != "training_images")){
+                const result = await $.get(`/postprocess_detection/${resultfile.name}`)
+                await App.Detection.set_results(filename, result)
+            }
+            else{
+                await App.Training.set_results(filename, resultfile)
+            }
         }
     }
 

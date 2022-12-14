@@ -1,92 +1,246 @@
+{% import 'roots/evaluation.html' as evaluation %}
+
 
 {% macro modal_settings() %}
 <!-- Settings -->
 <div class="ui tiny modal" id="settings-dialog">
     <i class="close icon"></i>
     <div class="header"> Settings </div>
-  
+
     <div class="ui form content">
-      
-      <div class="field">
-        <label>Root detection model</label>
-        <div class="ui dropdown selection" id="settings-active-model">
-          <input type="hidden" name="active-model">
-          <i class="dropdown icon"></i>
-          <div class="default text">Segmentation model</div>
-          <div class="menu">
-            <!--<div class="item" data-value="1">model_1</div>
-            <div class="item" data-value="0">model_2</div>-->
-          </div>
+
+        <div class="field">
+            <label>Root detection model</label>
+            <div class="ui dropdown selection" id="settings-active-model">
+                <input type="hidden" name="active-model">
+                <i class="dropdown icon"></i>
+                <div class="default text">Segmentation model</div>
+                <div class="menu">
+                    <!--<div class="item" data-value="1">model_1</div>
+                    <div class="item" data-value="0">model_2</div>-->
+                </div>
+            </div>
         </div>
-      </div>
-  
-      <div class="ui divider"></div>
-      <div class="field">
-        <label>Exclusion mask</label>
-        <div class="ui toggle checkbox" id="settings-exclusionmask-enable">
-          <input type="checkbox">
-          <label>Enable detection of foreign objects (e.g. tape)</label>
+
+        <div class="ui divider"></div>
+        <div class="field">
+            <label>Exclusion mask</label>
+            <div class="ui toggle checkbox" id="settings-exclusionmask-enable">
+                <input type="checkbox" id="exclusionmask-toggle">
+                <label>Enable detection of foreign objects (e.g. tape)</label>
+            </div>
         </div>
-      </div>
-  
-      <div class="field" id="settings-exclusionmask-model-field" style="display:none">
-        <label>Exclusion mask model</label>
-        <div class="ui dropdown selection" id="settings-exclusionmask-model">
-          <input type="hidden" name="active-model">
-          <i class="dropdown icon"></i>
-          <div class="default text">Exclusion mask model</div>
-          <div class="menu">
-            <!--<div class="item" data-value="1">model_1</div>
-            <div class="item" data-value="0">model_2</div>-->
-          </div>
+
+        <div class="field" id="settings-exclusionmask-model-field" style="display:none">
+            <label>Exclusion mask model</label>
+            <div class="ui dropdown selection" id="settings-exclusionmask-model">
+                <input type="hidden" name="active-model">
+                <i class="dropdown icon"></i>
+                <div class="default text">Exclusion mask model</div>
+                <div class="menu">
+                    <!--<div class="item" data-value="1">model_1</div>
+                    <div class="item" data-value="0">model_2</div>-->
+                </div>
+            </div>
         </div>
-      </div>
-  
-      <div class="ui divider"></div>
-      <div class="field" id="settings-tracking-model-field">
-        <label>Root tracking model</label>
-        <div class="ui dropdown selection" id="settings-tracking-model">
-          <input type="hidden" name="active-model">
-          <i class="dropdown icon"></i>
-          <div class="default text">Root tracking model</div>
-          <div class="menu">
-            <!--<div class="item" data-value="1">model_1</div>
-            <div class="item" data-value="0">model_2</div>-->
-          </div>
+
+        <div class="ui divider"></div>
+        <div class="field" id="settings-tracking-model-field">
+            <label>Root tracking model</label>
+            <div class="ui dropdown selection" id="settings-tracking-model">
+                <input type="hidden" name="active-model">
+                <i class="dropdown icon"></i>
+                <div class="default text">Root tracking model</div>
+                <div class="menu">
+                    <!--<div class="item" data-value="1">model_1</div>
+                    <div class="item" data-value="0">model_2</div>-->
+                </div>
+            </div>
         </div>
-      </div>
 
 
-      <div class="ui divider"></div>
-      <div class="field" id="settings-gpu-field">
-        <label>GPU</label>
-        <div class="ui visible warning message"  id="settings-no-gpu-warning">
-          <p>GPU not available</p>
+        <div class="ui divider"></div>
+        <div class="field" id="settings-gpu-field">
+            <label>GPU</label>
+            <div class="ui visible warning message" id="settings-no-gpu-warning">
+                <p>GPU not available</p>
+            </div>
+            <div id="settings-gpu-available-box">
+                <div class="ui message" id="settings-gpu-name-info">
+                    <p>Available GPU: <span id="settings-gpu-name">XXX</span></p>
+                </div>
+                <div class="ui toggle checkbox" id="settings-gpu-enable">
+                    <input type="checkbox">
+                    <label>Enable processing on the GPU</label>
+                </div>
+            </div>
         </div>
-        <div id="settings-gpu-available-box">
-          <div class="ui message" id="settings-gpu-name-info">
-            <p>Available GPU: <span id="settings-gpu-name">XXX</span></p>
-          </div>
-          <div class="ui toggle checkbox" id="settings-gpu-enable">
-            <input type="checkbox">
-            <label>Enable processing on the GPU</label>
-          </div>
-        </div>
-      </div>
 
-      <div class="ui divider"></div>
+        <div class="ui divider"></div>
 
-  
-     <div class="actions">
-        <div class="ui negative button">
-          Cancel
+
+        <div class="actions">
+            <div class="ui negative button">
+                Cancel
+            </div>
+            <div class="ui positive right labeled icon button" id="settings-ok-button">
+                Save
+                <i class="checkmark icon"></i>
+            </div>
         </div>
-        <div class="ui positive right labeled icon button" id="settings-ok-button">
-          Save
-          <i class="checkmark icon"></i>
-        </div>
-      </div>
     </div>
 </div>
 {% endmacro %}
 
+{% macro save_modal(app) %}
+<!--Test modalllllllll-->
+<div class="ui modal" id="save-modal">
+
+    <!-- Oskars box -->
+    {# {{ evaluation.evaluation_box(app) }} #}
+
+    <!-- Popup title -->
+    <div class="header">Model Results</div>
+
+    <!-- Evaluation results -->
+    <div class="scrolling content">
+        {{ evaluation.evaluation_save_infobox(trainingmodule = app+".Training", evaluationmodule = app) }}
+    </div>
+
+    <!-- Save or discard field -->
+    {{ evaluation.evaluation_save_field(app) }}
+</div>
+{% endmacro %}
+
+
+{% macro on_save_model_modal(app) %}
+<div class="ui modal" id="save-settings-modal">
+  <div class="header">Information about the model</div>
+  <div class="content">
+    <form class="ui form" action='#' id="save-settings-form" onsubmit="return false"> <!---->
+        
+        <div class="field">
+            <label>Name of the author:</label>
+            <input type="text" name="training-author" placeholder="Name" id="training-author">
+        </div>
+        <div class="field">
+          <label>Ecosystem:</label>
+          <input type="text" name="ecosystem" placeholder="Ecosystem" id="ecosystem">
+        </div>
+        <div class="field">
+          <label>Sampling depth:</label>
+          <input type="text" name="sampling-depth" placeholder="Sampling depth" id="sampling-depth">
+        </div>
+        <div class="field">
+          <label>Experimental treatment:</label>
+          <input type="text" name="ex-treatment" placeholder="Experimental treatment" id="ex-treatment">
+        </div>
+        <div class="field">
+          <label>Dominant species:</label>
+          <input type="text" name="dom-species" placeholder="Dominant species" id="dom-species">
+        </div>
+        <div class="field">
+          <label>Soiltype:</label>
+          <input type="text" name="soiltype" placeholder="Soiltype" id="soiltype">
+        </div>
+        <div class="field">
+          <label>Notes:</label>
+          <input type="text" name="notes" placeholder="" id="notes">
+        </div>
+
+        <!--<div class="ui segment form">--> <!--style="display:none"--> 
+        <div class="ui field">
+          <!--<div class="ui divider"></div>-->
+          <label>Save trained model</label>
+          <div class="ui action input">
+            <!--<input type="text" placeholder="New model name" id="training-new-modelname">-->
+            <!--<div class="ui buttons">-->
+              <button class="ui button" id="discard-model-button-settings" onclick="{{app}}.Training.on_discard_model()">
+                Discard Model
+              </button>
+              <div class="or"></div>
+              <!--<button class="ui violet right labeled icon button" id="onclick-save-model" onclick="">-->
+                <button class="ui green submit button" id="onclick-save-model-settings" onclick="{{app}}.Training.on_save_model()"> <!--onclick="{{app}}.Training.on_save_model()-->
+                <i class="save icon"></i>
+                Save Model
+              </button>
+            <!--</div>-->
+          </div>
+        </div>
+      <div class="ui error message" id="error-message-save-model"></div>
+    </form>
+  </div>
+</div>
+
+<script>
+$('#save-settings-form')
+  .form({
+    on: 'submit',
+    fields: {
+      author: {
+        identifier  : 'training-author',
+        rules: [
+          {
+            type   : 'empty',
+            prompt : 'Please enter the name of the author'
+          }
+        ]
+      },
+      ecosystem: {
+        identifier  : 'ecosystem',
+        rules: [
+          {
+            type   : 'empty',
+            prompt : 'Please enter the ecosystem'
+          }
+        ]
+      },
+      samp_depth: {
+        identifier  : 'sampling-depth',
+        rules: [
+          {
+            type   : 'empty',
+            prompt : 'Please enter the sampling depth'
+          }
+        ]
+      },
+      ex_treatment: {
+        identifier  : 'ex-treatment',
+        rules: [
+          {
+            type   : 'empty',
+            prompt : 'Please enter experimental treatment'
+          }
+        ]
+      },
+      dom_species : {
+        identifier  : 'dom-species',
+        rules: [
+          {
+            type   : 'empty',
+            prompt : 'Please enter dominant species'
+          }
+        ]
+      },
+      soiltype: {
+        identifier  : 'soiltype',
+        rules: [
+          {
+            type   : 'empty',
+            prompt : 'Please enter soiltype'
+          }
+        ]
+      },
+    }
+  })
+;
+</script>
+{% endmacro %}
+
+{% macro modal_evaluation_loading(app) %}
+<div class="ui tiny modal" id = "evaluation-modal">
+    <div class="ui segment">
+        <div class="ui active massive slow text elastic loader black inline centered">Evaluating model</div>
+    </div>
+</div>
+{% endmacro %}

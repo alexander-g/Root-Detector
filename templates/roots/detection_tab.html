@@ -12,7 +12,8 @@
 
 {% macro roots_filetable_content(app)%}
 <div class="filetable-content" style="display:none">
-    {{ base_content_menu.content_menu(
+    {{
+ base_content_menu.content_menu(
             callback_on_process        = app+".Detection.on_process_image",
             callback_apply_corrections = None,
             callback_new_box           = None,
@@ -22,19 +23,27 @@
                 'show_results_checkbox': True,
                 'extras': skeleton_checkbox()
             }
-    ) | indent }}
+    ) | indent
+    }}
 
     <div class="image-container">
-        {{ base_js_templates.content_image(
-            name           = "input",  
+        {{
+ base_js_templates.content_image(
+            name           = "input",
             overlay        = base_js_templates.image_overlay("input"),
             viewcontrols   = app+".ViewControls"
-          ) | indent(8) }}
+          ) | indent(8)
+        }}
         {{ base_js_templates.progress_dimmer() }}
     </div>
 </div>
 {% endmacro %}
 
+{% macro information_detection() %}
+<div>
+    Here is information on how to use this page.
+</div>
+{% endmacro %}
 
 {% macro filetable_row_template(app) %}
     {{ base_js_templates.filetable_row_template(app, content=roots_filetable_content) }}

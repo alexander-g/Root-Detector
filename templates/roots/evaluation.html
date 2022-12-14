@@ -1,0 +1,245 @@
+{% import   'base/training_tab.html'    as base_training_tab %}
+{% import   'base/js_templates.html'    as base_js_templates %}
+{% import   'base/content_menu.html'    as base_content_menu %}
+{% import   'base/boxes.html'           as base_boxes   %}
+
+
+{% macro errormap_view_menu() %}
+<div class="menu view-menu">
+    <ul class="ui list", style="padding:0px">
+        <li><b>SHIFT + Drag</b> to move the image</li>
+        <li><b>SHIFT + Mouse wheel</b> to zoom</li>
+        <li><b>SHIFT + Double-click</b> to reset</li>
+        <li><b><span class="ui green text">GREEN</span></b> denotes true positives</li>
+        <li><b><span class="ui blue text">BLUE</span></b> denotes false negatives</li>
+        <li><b><span class="ui red text">RED</span></b> denotes false positives</li>
+    </ul>
+</div>
+{% endmacro %}
+
+<!-- Errormap help popup -->
+{% macro errormap_help() %}
+<div class="ui segment flowing popup">
+    <ul class="ui list">
+        <li><b>SHIFT + Drag</b> to move the image</li>
+        <li><b>SHIFT + Mouse wheel</b> to zoom</li>
+        <li><b>SHIFT + Double-click</b> to reset</li>
+        <li><b><span class="ui green text">GREEN</span></b> denotes true positives</li>
+        <li><b><span class="ui blue text">BLUE</span></b> denotes false negatives</li>
+        <li><b><span class="ui red text">RED</span></b> denotes false positives</li>
+    </ul>
+</div>
+<script>$('.errormap-help-menu-button').popup({ hoverable: false });</script>
+{% endmacro %}
+
+<!-- Errormap content menu -->
+{% macro errormap_content_menu() %}
+<div class="ui bottom attached secondary icon menu" style="border-top-width:0px; margin-bottom:0px;">
+
+    <div class="ui simple dropdown icon item view-menu-button">
+        <i class="eye icon"></i>
+        {{ base_content_menu.view_menu() | indent(8)}}
+    </div>
+
+    <a class="item errormap-help-menu-button"><i class="help icon"></i></a>
+    {{ errormap_help() }}
+
+
+
+
+</div>
+{% endmacro %}
+
+<!-- Errormap filetable content -->
+{% macro errormap_filetable_content(app) %}
+<div class="errormap-filetable-content" style="display:none">
+
+    {{ errormap_content_menu() }}
+
+    <div class="image-container" style="height:calc(50vh)">
+        {{ base_js_templates.content_image( name="left input", overlay=base_js_templates.image_and_boxes_overlay("left"), viewcontrols=app+".ViewControls" ) | indent(8) }}
+        {{ base_js_templates.content_image( name="right input", overlay=base_js_templates.image_and_boxes_overlay("right"), viewcontrols=app+".ViewControls" ) | indent(8) }}
+        {{ base_js_templates.progress_dimmer() }}
+    </div>
+</div>
+{% endmacro %}
+
+
+<!-- Errormap filetable row template -->
+{% macro errormap_filetable_row_template(app) %}
+<template id="errormap-filetable-row-template">
+
+    <tr class="ui title table-row" filename="${filename0}">
+        <td>
+            <i class="dropdown icon"></i>
+            {{ base_js_templates.status_icons()    | indent(8) }}
+            <label>${filename0}</label>
+        </td>
+    </tr>
+
+    <tr style="display:none" filename0="${filename0}" filename1="${filename1}" filename="${filename0}.${filename1}">
+
+        <td colspan="5" class="ui content" style="padding:0px;">
+            {{ base_js_templates.loading_spinner() | indent(8) }}
+            {{ errormap_filetable_content(app)     | indent(8) }}
+        </td>
+    </tr>
+</template>
+{% endmacro %}
+
+
+<!-- Errormap filetable body -->
+{% macro base_main_table(app) %}
+<table class="ui fixed celled unstackable table accordion" id="evaluation_errormap_table" style="border:0px; margin-top:0px;">
+    <!-- Header text -->
+    <thead>
+        <tr>
+            <th class="sixteen wide" onclick="{{ sort_callback }}" id="evaluation_errormap_files">
+                No Evaluation Images Used.
+            </th>
+        </tr>
+    </thead>
+    <!-- Filetable rows -->
+    <tbody>
+        {#   #errormap-filetable-row-template inserted from javascript here   #}
+    </tbody>
+</table>
+<script>$('#evaluation_errormap_table.accordion').accordion({ duration: 0, onOpening: RootsEvaluation.on_errormap_accordion_open })</script>
+
+{{ errormap_filetable_row_template(app) }}
+{% endmacro %}
+
+<!-- Placeholder image box -->
+{% macro evaluation_box(app) %}
+<div class="ui form content">
+    <div>
+        <div class="ui segment form" style="margin-top:0px;" id="evaluation-box" hidden>
+            <p>
+                Evaluation Box: Here we have maybe an error map, precission of both models and maybe side by side comparision of the starting point and final model?
+            </p>
+            <div class="ui button" id="eval_img_button" onclick="{{app}}.Training.set_eval_images()" srcname=''> Randomize evaluation example pair </div>
+            <div class="ui two column grid">
+                <div class="column">
+                    <div class="ui segment" style="text-align:center">
+                        <p> Original image </p>
+                        <img class="ui image" id='evaluated-image' draggable="false">
+                    </div>
+                </div>
+                <div class="column">
+                    <div class="ui segment" style="text-align:center">
+                        <p> Error map </p>
+                        <img class="ui image" id='errormap-image' draggable="false">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endmacro %}
+
+<!-- Save model field -->
+{% macro evaluation_save_field(app) %}
+<div class="ui segment form" id="training-new-modelname-field">
+    <!--style="display:none"-->
+    <div class="ui field">
+        <!--<div class="ui divider"></div>-->
+        <label>Save trained model</label>
+        <div class="ui action input">
+            <input type="text" placeholder="New model name" id="training-new-modelname">
+            <div class="ui buttons">
+                <button class="ui button" id="discard-model-button" onclick="{{app}}.Training.on_discard_model()">
+                    Discard Model
+                </button>
+                <div class="or"></div>
+                <!--<button class="ui violet right labeled icon button" id="onclick-save-model" onclick="">-->
+                <button class="ui positive button" id="onclick-save-model" onclick="{{app}}.Training.on_save_settings()">
+                    <i class="save icon"></i>
+                    Save Model
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endmacro %}
+
+<!-- Macro for displaying evaluation of model -->
+{% macro evaluation_save_infobox(trainingmodule, evaluationmodule) %}
+
+<!-- Error map display -->
+{{ base_main_table(evaluationmodule) }}
+
+<!-- Only show evaluation data box if there are evaluation files. -->
+<div class="ui hidden message" id="evaluation-results-box" , style="padding:0 0">
+
+    <!-- Evaluation statistics -->
+    <div class="ui segment form" style="margin-top:0px;">
+        <div class="field" id="evaluation-results-field">
+
+            <!-- Statistics header -->
+            <div class="ui input" id="evaluation-results-statistics">
+                <label style="padding:10px; width:40%;"><b>Statistic</b></label>
+                <label style="padding:10px; width:30%;"><b>Old model</b></label>
+                <label style="padding:10px; width:30%;"><b>New model</b></label>
+            </div>
+            <div class="ui divider"></div>
+
+            <!-- F1 score -->
+            <div class="ui input" id="evaluation-results-f1">
+                <label style="padding:10px; width:10%;">F1 score:</label>
+                <div data-tooltip="The harmonic mean of precision and recall" data-position="top left">
+                    <i class="question circle outline icon" style="visibility: visible;"></i>
+                </div>
+                <label style="padding:10px; width:28%;"></label>
+                <label style="padding:10px; width:30%;"><b id="evaluation-results-f1-label-old">xxx</b></label>
+                <label style="padding:10px; width:10%;"><b id="evaluation-results-f1-label-new">xxx</b></label>
+                <label style="padding:10px; width:20%;"><p id="evaluation-results-f1-label-comp"></p></label>
+            </div>
+
+            <!-- Accuracy (or precision) -->
+            <div class="ui input" id="evaluation-results-accuracy">
+                <label style="padding:10px; width:10%;">Precision:</label>
+                <div data-tooltip="Ratio between the correctly predicted root pixels and the total number of root pixel predictions" data-position="top left">
+                    <i class="question circle outline icon" style="visibility: visible;"></i>
+                </div>
+                <label style="padding:10px; width:28%;"></label>
+                <label style="padding:10px; width:30%;"><b id="evaluation-results-accuracy-label-old">xxx</b></label>
+                <label style="padding:10px; width:10%;"><b id="evaluation-results-accuracy-label-new">xxx</b></label>
+                <label style="padding:10px; width:20%;"><p id="evaluation-results-accuracy-label-comp"></p></label>
+            </div>
+
+            <!-- Recall score -->
+            <div class="ui input" id="evaluation-results-recall">
+                <label style="padding:10px; width:10%;">Recall:</label>
+                <div data-tooltip="The ratio between correctly predicted root pixels and the total number of root pixels from annotation" data-position="top left">
+                    <i class="question circle outline icon" style="visibility: visible;"></i>
+                </div>
+                <label style="padding:10px; width:28%;"></label>
+                <label style="padding:10px; width:30%;"><b id="evaluation-results-recall-label-old">xxx</b></label>
+                <label style="padding:10px; width:10%;"><b id="evaluation-results-recall-label-new">xxx</b></label>
+                <label style="padding:10px; width:20%;"><p id="evaluation-results-recall-label-comp"></p></label>
+            </div>
+
+            <!-- IoU score -->
+            <div class="ui input" id="evaluation-results-iou">
+                <label style="padding:10px; width:10%;">IoU:</label>
+                <div data-tooltip="The extent of overlap between the predictions and the annotations" data-position="top left">
+                    <i class="question circle outline icon" style="visibility: visible;"></i>
+                </div>
+                <label style="padding:10px; width:28%;"></label>
+                <label style="padding:10px; width:30%;"><b id="evaluation-results-iou-label-old">xxx</b></label>
+                <label style="padding:10px; width:10%;"><b id="evaluation-results-iou-label-new">xxx</b></label>
+                <label style="padding:10px; width:20%;"><p id="evaluation-results-iou-label-comp"></p></label>
+            </div>
+
+            <!-- Verdict -->
+            <div class="ui divider"></div>
+            <div class="ui input" id="evaluation-results-verdict">
+                <label style="padding:10px; width:10%;"><b>Verdict:</b></label>
+                <label style="padding:10px; width:90%;"><p id="evaluation-results-verdict-text"></p></label>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% endmacro %}

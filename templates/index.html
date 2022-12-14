@@ -1,15 +1,17 @@
 <!--{{warning}}-->
-
 {% from   'roots/top_menu.html'       import top_menu %}
+{% from   'roots/navigation_menu.html'import navigation_menu %}
 {% import 'base/modals.html'          as     base_modals %}
-{% from   'roots/main_container.html' import main_container %}
+{#{% from   'roots/main_container.html' import main_container %}#}
 {% from   'roots/detection_tab.html'  import filetable_row_template %}
 {% from   'roots/modals.html'         import modal_settings %}
+{% from   'roots/modals.html'         import save_modal, on_save_model_modal, modal_evaluation_loading  %}
 
 {% set app = "RootDetectorApp" %}
 
 <html>
 <head>
+    <body style="background-color:rgb(172,216,173);"></body>
     <title>DigIT RootDetector</title>
     {# TODO: indent #}
     {% include 'base/scripts.html'   %}
@@ -18,16 +20,19 @@
     {{ filetable_row_template(app)  | indent }}
 </head>
 
-
-<body onload="{{app}}.init()">
+<body onload="{{app}}.init(), GLOBAL.App.Training.update_model_list(false)">
 
     {{ top_menu(app)             | indent }}
+    {{ navigation_menu(app, Allinfo)      | indent }}
 
-    {{ main_container(app)       | indent }}
+    {#{{ main_container(app)       | indent }}#}
 
     {{ modal_settings()          | indent }}
     {{ base_modals.modal_training_progress()      | indent }}
     {{ base_modals.modal_loading_files_progress() | indent }}
-
+    {{ modal_evaluation_loading(app)| indent }}    
+    {# TEST  #}
+    {{ save_modal(app)              | indent}}
+    {{ on_save_model_modal(app)     | indent }}
 </body>
 </html>

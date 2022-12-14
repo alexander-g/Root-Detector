@@ -1,0 +1,137 @@
+{% macro home_tab() %}
+<div class="ui active tab segment" data-tab="home" style="background-color: #f8f8f9;">
+<head>
+    <style>
+        .parallax {
+            /* The image used */
+            background-image: url("https://images.unsplash.com/photo-1601979142879-ad5896cb0617?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1173&q=80");
+          
+            /* Set a specific height */
+            min-height: 200px;
+          
+            /* Create the parallax scrolling effect */
+            background-attachment: fixed;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+        }
+
+        .box1{
+            display: flex;
+            flex-direction: row;
+            margin: 30px 15px 30px 15px;
+        }
+
+        .text_box{
+            flex: 2;
+        }
+
+        .header{
+            margin-bottom: 5px;
+        }
+
+        .img_box {
+            flex:1;
+            padding-top: 8px;
+        }
+
+        .description{
+            text-align: center;
+            font-style: italic;
+            color: grey;
+            font-size: 17px;
+            padding-top:5px;
+            padding-bottom: 5px;
+            margin: 3px;
+        }
+
+        .link{
+            padding: 8px;
+            background-color: rgb(172,216,173);
+            border: 1px;
+            border-style: solid;
+            border-color: black;            
+        }
+
+        .link:hover{
+            cursor:pointer;
+            opacity: 0.8;
+        }
+
+        hr{
+            border-top:1px solid rgb(189, 184, 184) 
+        }
+
+        .box2{
+            margin:15px 15px 30px 15px;
+        }
+
+        .gallery_box{
+            margin: 20px 15px 30px 15px;
+        }
+
+        .gallery{
+            margin: 15px;
+            display: flex;
+            flex-direction: row;
+            flex:1 1 1;
+        }
+
+        .gallery_item{
+            margin:10px;
+            box-shadow: rgb(134, 132, 132) 2px 2px 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="parallax"></div>
+    <div class="box1">
+        <div class="text_box">
+            <h2 class="header">Get started with Root Detector</h2>
+            <p class="text">Lorem ipsum dolor sit amet consectetur, adipisicing elit. Distinctio, tempora incidunt neque mollitia natus illum deserunt aspernatur velit error, sapiente adipisci suscipit voluptates fugit magni odio assumenda eaque amet id expedita consequuntur beatae nam? Harum voluptatem quos, a numquam magni odio vitae voluptatibus assumenda fugiat. Qui fugiat voluptatibus nihil sapiente sed voluptatem, odit porro. Vero veniam sint ex accusamus ullam error non nemo illum, facere, quos voluptatibus voluptate incidunt aliquam, perferendis ipsam enim dolor officia earum placeat! Veritatis blanditiis facilis tempora illo odit error earum exercitationem, non velit placeat eius, quod impedit, rerum laudantium cupiditate maiores fuga esse ab libero minus. Minima numquam aut aliquam maxime accusamus, inventore consectetur, praesentium necessitatibus vitae adipisci cupiditate minus unde ullam iusto ipsum rerum sequi tempora ratione mollitia reiciendis quidem dicta rem? Consequuntur, quibusdam. Eos, tempore ex maiores at, dolorum assumenda labore quasi quos aliquid beatae repudiandae nobis, praesentium voluptatibus harum veritatis? Iste ipsa tempora est dolorem ad vel voluptate, tenetur ab, nostrum impedit doloribus nemo libero, sint neque repudiandae sapiente nisi quas debitis? Libero commodi sequi officia dicta deleniti eaque veniam cum minima reprehenderit ducimus in iure ad sit sint, temporibus soluta dolorem voluptates blanditiis, consequatur eveniet, sunt tenetur ratione! Tempore minima tenetur voluptate deleniti unde et non nisi quos, eveniet sequi pariatur. Nobis vitae magnam incidunt corporis fugiat possimus, tenetur qui labore quos asperiores expedita nulla dignissimos iste quisquam ad eaque dolorem alias dolore doloremque. Ipsum ipsa harum modi explicabo consectetur dolores sint libero recusandae, aut quisquam odio nulla obcaecati! Accusamus, nisi aliquam facere quae sapiente molestiae, nesciunt neque aspernatur officiis voluptatum dignissimos fuga corporis assumenda illo eius quisquam explicabo. Quas ratione soluta error consequuntur! Minus provident, ipsum laudantium architecto dolore soluta blanditiis commodi excepturi earum molestiae ipsam consequatur repellat esse. Nemo doloremque sequi nihil laborum culpa debitis? Quae consectetur ducimus quos!</p>
+            <button class="link" onclick="GLOBAL.App.Detection.click_analysis()"><h4>Ready to start analyzing? Click here.</h4></button>
+        </div>
+        <div class="img_box">
+            <img class="ui large centered image rounded" style="box-shadow: rgb(134, 132, 132) 2px 2px 5px;" src="img_6422.jpg">
+        <div class="description">Field work installing minirhizotron tubes in a bog in Abisko</div>
+        </div>
+    </div>
+    <hr>
+    <div class="box2">
+        <div class="text_box">
+            <h2 class="header">Our research</h2>
+            <p class="text">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Facilis ad obcaecati aut temporibus veniam dolorem ullam culpa maiores, labore voluptatum incidunt quibusdam odio amet fuga aliquid dolore, voluptatibus quisquam enim, quo deserunt? Adipisci eveniet minus quia tempora incidunt corrupti alias exercitationem aliquam voluptate repellat nihil assumenda, accusantium facere sequi fugiat explicabo, impedit eligendi nobis nesciunt provident, molestiae obcaecati esse? Soluta minima dolor excepturi! Nemo, eaque reprehenderit quo esse totam explicabo alias odio, laboriosam eius ipsam officiis voluptates perspiciatis. A quas nihil laborum ipsam quasi fugiat, nostrum, id consectetur odit magnam fugit facilis facere dolorem suscipit, laboriosam porro. Est ullam suscipit voluptates quidem illum doloribus reiciendis nostrum debitis, rerum possimus voluptas? Tenetur quis dignissimos, modi dolorem exercitationem doloribus iure officia architecto ducimus recusandae! Quos fugiat delectus nostrum, explicabo reiciendis alias autem ea porro impedit quo voluptate deserunt tempore recusandae consequuntur commodi qui necessitatibus. Vitae laboriosam dolorem itaque, eaque accusantium culpa rerum error quis! Non, odit. Nostrum odit soluta ducimus sint cumque numquam nam nisi commodi sunt, assumenda cupiditate dolor voluptates, ipsa excepturi voluptatibus! Et aperiam, fuga voluptatum modi consectetur consequuntur rem ipsam accusamus dolorum sunt voluptates animi aspernatur sequi nemo? Beatae quo repudiandae eum voluptatem rem? Ratione saepe, laboriosam ex dolore suscipit aliquid quisquam dolor veritatis recusandae est, illum maiores nobis. Nisi reprehenderit esse fuga illo nam, molestiae amet quos laudantium. Ad eveniet, nulla quasi dolor ipsa illum quisquam voluptate numquam vero ab odit omnis excepturi similique, ipsam quia iusto? Fugit, nihil. Rerum, dolorem! Fuga vel dignissimos eos vero quod unde inventore hic consectetur iure facilis voluptatum, officia ex iste sed cum praesentium voluptatibus nisi. Magnam provident sequi fugit quasi natus consequuntur perspiciatis soluta, corrupti voluptatum itaque deleniti pariatur ipsa cupiditate accusantium, quas obcaecati hic odio beatae? Iure, hic quisquam, exercitationem, alias culpa inventore sapiente ducimus rem quibusdam officiis eveniet labore?</p>
+        </div>
+    </div>
+    <!--<div class="site_div"></div>-->
+    <hr>
+    <div class="gallery_box">
+        <h2 class="header">Gallery</h2>
+        <div class="gallery">
+            <div class="gallery_item">
+                <img class="ui large centered image" src="image (2).jpeg">
+            </div>
+            <div class="gallery_item">
+                <img class="ui large centered image" src="img_3485.jpg">
+            </div>
+            <div class="gallery_item">
+                <img class="ui large centered image" src="img_6451.jpg">
+            </div>
+        </div>
+        <div class="gallery">
+            <div class="gallery_item">
+                <img class="ui large centered image" src="img_6512.png">
+            </div>
+            <div class="gallery_item">
+                <img class="ui large centered image" src="img_6417.jpg">
+            </div>
+            <div class="gallery_item">
+                <img class="ui large centered image" src="img_6512.png">
+            </div>
+        </div>
+    </div>
+</body>
+</div>
+{% endmacro%}
+
+

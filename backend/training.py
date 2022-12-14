@@ -1,7 +1,7 @@
 from base.backend import GLOBALS
 from base.backend import pubsub
 from base.backend.app import get_cache_path
-
+from base.backend.app import update_user_settings
 import os, sys
 import torch
 
@@ -23,7 +23,7 @@ def start_training(imagefiles, targetfiles, training_options:dict, settings, cal
         model = settings.models[training_type]
         #indicate that the current model is unsaved
         settings.active_models[training_type] = ''
-
+        update_user_settings(settings)
         ok = model.start_training(
             imagefiles, 
             targetfiles, 
@@ -41,8 +41,8 @@ def find_targetfiles(inputfiles):
     def find_targetfile(imgf):
         no_ext_imgf = os.path.splitext(imgf)[0]
         for f in [
-            f'{imgf}.segmentation.png', 
-            f'{no_ext_imgf}.segmentation.png', 
+            f'{imgf}.annotation.png', 
+            f'{no_ext_imgf}.annotation.png', 
             f'{no_ext_imgf}.png'
         ]:
             if os.path.exists(f):

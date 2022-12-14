@@ -1,0 +1,121 @@
+
+{% macro model_selection_tab(app,Allinfo) %}
+<div class="ui tab segment" data-tab="modelselection" id="model-selection" style="background-color: #f8f8f9;">
+    <h1>How do I choose the correct model?</h1>
+    <p></p>
+    <h3>This page exists in order to help you select the best model for your images. Example images and information regarding each model is highlighted so that you can pick one that fit the environment your images where taken in. </h3>
+    <p></p>
+    <h3></h3>
+    <p></p>
+    <model-list>
+
+    </model-list>
+
+    <!-- Templates used to re-insert model boxes -->
+    {{ model_selection_inserter(app) }}
+    {{ model_selection_inserter_images(app) }}
+</div>
+{% endmacro%}
+
+<!-- Macro template used to append new models. -->
+{% macro model_selection_inserter(app) %}
+<template id="model-selection-template">
+
+    <div class="ui segment form" margin="" id="model-element">
+        <!--Insert Model Name HERE-->
+        <h3 id="choose-modelname"><p id="model-name">${info["modelname"]}</p></h3>
+
+        <div class="grid-container" style="display:grid;grid-template-columns: 2fr 1fr;">
+
+            <div class="grid-item">
+                <div>
+                    <h4>A selection of pictures model was trained on:</h4>
+                </div>
+                <!--Insert example images HERE-->
+                <model-list-image class="ui medium images">
+                    <!-- Append images using another template -->
+                </model-list-image>
+            </div>
+            <div class="grid-item">
+                <h4>Information about the model: </h4>
+                <div class="grid-container" style="display:grid;grid-template-columns: 1fr 1fr;grid-row-gap:16px">
+                    <!--Insert model information HERE-->
+
+                    <!--Author-->
+                    <div class="grid-item">
+                        <p><i><b>Author</b>:</i></p>
+                    </div>
+                    <div class="grid-item">
+                        <p id="choose-author">${info["author"]}</p>
+                    </div>
+                    
+                    <!--Ecosystem-->
+                    <div class="grid-item">
+                        <p><i><b>Ecosystem:</b></i></p>
+                    </div>
+                    <div class="grid-item">
+                        <p id="choose-ecosystem">${info["ecosystem"]}</p>
+                    </div>
+
+                    <!--Sampling depth-->
+                    <div class="grid-item">
+                        <p><i><b>Sampling depth:</b></i></p>
+                    </div>
+                    <div class="grid-item">
+                        <p id="choose-sampling-depth">${info["sampling-depth"]}</p>
+                    </div>
+
+                    <!--Experimental treatment-->
+                    <div class="grid-item">
+                        <p><i><b>Experimental treatment:</b></i></p>
+                    </div>
+                    <div class="grid-item">
+                        <p id="choose-ex-treatment">${info["ex-treatment"]}</p>
+                    </div>
+
+                    <!--Dominant species-->
+                    <div class="grid-item">
+                        <p><i><b>Dominant species:</b></i></p>
+                    </div>
+                    <div class="grid-item">
+                        <p id="choose-dom-species">${info["dom-species"]}</p>
+                    </div>
+
+                    <!--Soiltype-->
+                    <div class="grid-item">
+                        <p><i><b>Soiltype:</b></i></p>
+                    </div>
+                    <div class="grid-item">
+                        <p id="choose-soiltype">${info["soiltype"]}</p>
+                    </div>
+
+                    <!--Notes-->
+                    <div class="grid-item">
+                        <p><i><b>Notes:</b></i></p>
+                    </div>
+                    <div class="grid-item">
+                        <p id="choose-notes">${info["notes"]}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--Apply Model - button-->
+        <div class="ui hidden section divider"></div>
+        <div style="position:absolute;bottom:20px;right:20px;">
+            <button class="ui toggle button" id="${info['modelname']}" onclick="{{app}}.Settings.toggle(this.id)" style="height:40px;width:180px;"> 
+                <i class="seedling icon" style="visibility: visible;float:left"></i>
+                <span id="${info['modelname']}-appliedtext">Apply Model</span>
+            </button>
+        </div>
+    </div>
+
+</template>
+{% endmacro %}
+
+<!-- Macro template used to append images to the model box template. -->
+{% macro model_selection_inserter_images(app) %}
+<template id="model-selection-template-images">
+    <img src="TrainingImages/${training_image}" id="choose-image-one" loading="lazy" draggable="false">
+</template>
+{% endmacro %}
+

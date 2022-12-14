@@ -55,4 +55,45 @@ RootsSettings = class extends BaseSettings{
         console.log(data.settings)
         $('#settings-gpu-enable').checkbox(!!data.settings['use_gpu']? 'check' : 'uncheck')
     }
+
+    static async toggle(click_id){
+        // Uppdate settings to chosen detection model
+        if(document.getElementById(click_id+'-appliedtext').innerHTML === 'Apply Model'){
+            GLOBAL.settings.active_models['detection'] = click_id
+            this.dispatch_event()
+            var settingsdata = deepcopy(GLOBAL.settings);
+            var postdata     = JSON.stringify(settingsdata);
+            $('#settings-ok-button').addClass('loading');
+    
+            $.post(`/settings`, postdata,).done( x => {
+                $('#settings-dialog').modal('hide');
+                console.log('Settings saved successfully:',x)
+            }).fail( x => {
+                console.error('Saving settings failed', x)
+                $('body').toast({message:'Saving failed', class:'error'})
+            }).always( _ => {
+                $('#settings-ok-button').removeClass('loading');
+            } );
+
+        }
+
+        // Untoggle all buttons visually 
+        var allmodels = GLOBAL.available_models.detection;
+        for (let i = 0; i < allmodels.length; i++) {
+            var modelname = allmodels[i]['name'] 
+            element = document.getElementById(modelname+'-appliedtext')
+            if (element !=null) {
+                $('#'+modelname+'-appliedtext').text("Apply Model")
+                document.getElementById(modelname).style.backgroundColor = 'lightgray'
+            }
+          }
+
+        // Toggle the button clicked on
+        var element = document.getElementById(click_id);
+        element.style.backgroundColor = element.style.backgroundColor === 'green' ? 'lightgray' : 'green'          
+        $('#'+click_id+'-appliedtext').text(function(i, text){
+            return text === "Apply Model" ? "Model Applied" : "Apply Model";
+        })
+    }
+
 }

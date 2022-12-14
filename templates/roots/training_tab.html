@@ -1,63 +1,142 @@
 {% import 'base/training_tab.html' as base_training_tab %}
+{% import 'roots/evaluation.html' as evaluation %}
+
+
 
 {% macro number_of_files_infobox() %}
-<div class="ui hidden message" id="training-number-of-files-info-message">
-  <p>Number of training files: <b id="training-number-of-files-info-label">xxx</b></p>
+<div class="ui hidden message" id="training-number-of-files-info-message" style="background-color:#bfe3ca;">
+    <p>Number of training files: <b id="training-number-of-files-info-label">xxx</b></p>
 </div>
 {% endmacro %}
 
 
-{% macro training_controls(trainingmodule) %}
-<div>
-<div class="ui segment form" style="margin-top:0px;">
+{# Upload button which uploads training images to the training page #}
+{% macro upload_button_training(app) %}
+<!--<h4 class="ui dividing header">Training options</h4>-->
+<label for="training_images" id="upload_training_button" class="ui basic icon button training_buttons">
+    <i class="upload icon" style="float:left;"></i>
+    Upload Training Images
+</label>
+<!-- padding-top:0; padding-bottom:0-->
+<input type="file" id="training_images" style="display:none"
+       onchange="{{ app }}.FileInput.on_inputfiles_select(event)" accept="image/*" multiple>
+{% endmacro %}
+
+
+
+{# Upload button which uploads annotation as before, (or exclusion masks if that is chosen) #}
+{% macro upload_button_annotation(app) %}
+<!--<h4 class="ui dividing header">Training options</h4>-->
+<p id="text_annotation_files">xxx</p>
+<label for="training_image_annotation" id="upload_anno_button" class="ui basic icon button training_buttons" data-content="hej">
+    <i class="upload icon" style="float:left;"></i>
+    <p id="ground_truth_button_text">xxx</p>
+</label>
+<!-- padding-top:0; padding-bottom:0-->
+<input type="file" id="training_image_annotation" style="display:none"
+onchange="{{ app }}.FileInput.on_annotations_select(event); {{ app }}.Training.show_nr_ev_images_section()" accept="image/*, application/zip, application/x-zip-compressed" multiple>
+{% endmacro %}
+
+{# Makes box where user can choose how many images that should be used for evaluation #}
+{% macro nr_evaluation_images(app) %}
+<div class="ui hidden message" id="nr_ev_image_box" style="display:none">
     <!--<h4 class="ui dividing header">Training options</h4>-->
-    <div class="field" id="training-model-type-field">
-        <div class="field">
-            <label>Model Type</label>
-            <div class="ui dropdown selection" id="training-model-type">
-                <input type="hidden" name="active-model">
-                <i class="dropdown icon"></i>
-                <div class="default text"></div>
-                <div class="menu">
-                  <div class="item" data-value="detection">Root Detection</div>
-                  <div class="item" data-value="exclusion_mask">Exclusion Mask</div>
-                  <!--<div class="item" data-value="tracking">Root Tracking</div>-->
+    <p>
+        State how many of the training images that should be used for evaluation. Usually 20-30% of
+        the training data is used for evaluation. The default number shows around 25% of the training data.
+    </p>
+    <label for="nr_evaluation_images">Number of evaluation images (between 0 and <span id="nr_training_images">xxx</span>):</label>
+    <input type="number" id="nr_evaluation_images" name="nr_evaluation_images" min="0" max="0" value="0">
+</div>
+{% endmacro %}
+
+{% macro save_model_field(trainingmodule) %}
+<div class="ui segment form" id="training-new-modelname-field" style="display:none">
+  <div class="ui field">
+    <!--<div class="ui divider"></div>-->
+    <label>Save trained model</label>
+    <div class="ui action input">
+      <input type="text" placeholder="New model name" id="training-new-modelname">
+      <div class = "ui buttons">
+        <button class="ui green right labeled icon button" onclick="{{trainingmodule}}.on_save_model()">
+            <i class="save icon"></i>
+            Save Model
+        </button>
+        <button class="ui red right labeled icon button" onclick="{{trainingmodule}}.on_discard_model()">
+            <i class="delete icon"></i>
+            Discard
+        </button>
+        </div>
+    </div>
+    
+  </div>
+</div>
+{% endmacro %} {# save_model_field #}
+
+{% macro training_controls(trainingmodule, upload_training ="", upload_ground_truth="", nr_ev_images="") %}
+<div>
+    <div class="ui segment form" style="margin-top:0px; background-color: #f8f8f9
+    ;">
+        <!--<h4 class="ui dividing header">Training options</h4>-->
+        <div class="field" id="training-model-type-field">
+            <div class="field">
+                <label>Model Type</label>
+                <div class="ui dropdown selection" id="training-model-type">
+                    <input type="hidden" name="active-model" id="model_choice" onchange="{{ trainingmodule }}.which_upload_button_to_show(event)">
+                    <i class="dropdown icon"></i>
+                    <div class="default text"></div>
+                    <div class="menu">
+                        <div class="item" data-value="detection">Root Detection</div>
+                        <div class="item" data-value="exclusion_mask">Exclusion Mask</div>
+                        <!--<div class="item" data-value="tracking">Root Tracking</div>-->
+                    </div>
                 </div>
             </div>
         </div>
+
+        {{ upload_training }}
+
+        {{ upload_ground_truth }}
+
+        <div class="ui divider"></div>
+
+        {{ nr_ev_images }}
+
+        <div class="ui divider"></div>
+
+        {{ base_training_tab.lr_epochs_fields(label="Hyperparameters") }}
+
+        <div class="ui divider"></div>
+
+        {{ base_training_tab.starting_point_model_infobox() }}
+
+        {{ number_of_files_infobox() }}
+
+        <div class="ui divider"></div>
+
+        {{ base_training_tab.start_training_button(trainingmodule) }}
+
     </div>
-
-    <div class="ui divider"></div>
-
-    {{ base_training_tab.lr_epochs_fields(label="Hyperparameters") }}
-    
-    <div class="ui divider"></div>
-
-    {{ base_training_tab.starting_point_model_infobox() }}
-
-    {{ number_of_files_infobox() }}
-
-    <div class="ui divider"></div>
-
-    {{ base_training_tab.start_training_button(trainingmodule) }}
-</div>
-<script>
+    <script>
     $('#training-model-type')
         .dropdown({onChange: _ => {{ trainingmodule }}.refresh_tab() } )
         .dropdown('set selected', 'detection')
     $('#training-model-type-field .checkbox')
         .checkbox({onChange: _ => {{trainingmodule}}.refresh_tab() } )
         .checkbox('set checked')
-</script>
-{{ base_training_tab.save_model_field(trainingmodule) | indent }}
+    </script>
+    {#{{ base_training_tab.save_model_field(trainingmodule) | indent }}#}
 </div>
-{% endmacro %}
-
+    {% endmacro %}
 
 {% macro training_tab(app) %}
-<div id="training-tab">
-    
-    {{ training_controls(trainingmodule = app+".Training") }}
+<div id="training-tab-wide">
+    <div>
+        {# add upload button for training#}
+        {{ training_controls(trainingmodule = app+".Training", upload_training=upload_button_training(app), upload_ground_truth=upload_button_annotation(app), nr_ev_images=nr_evaluation_images(app)) }}
+    </div>
+    <div>
 
+    </div>
 </div>
 {% endmacro %}

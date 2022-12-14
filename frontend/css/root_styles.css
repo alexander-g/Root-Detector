@@ -1,0 +1,248 @@
+/*
+    ===========================================================================
+    Custom CSS styling for RootDetector program.
+    ===========================================================================
+*/
+
+/* ------------------------------------------------------------------------- */
+/* CUSTOM VARIABLES */
+/* ------------------------------------------------------------------------- */
+:root {
+    --root-color-background-green: rgba(137, 209, 80, 0.8);
+    --root-color-background-light-blue: rgba(110, 144, 210, 0.3);
+    --root-color-background-dark-blue: rgba(24, 66, 79, 0.7);
+    --root-color-text-white: rgba(255, 255, 255, 1);
+}
+
+
+
+/* ------------------------------------------------------------------------- */
+/* BODY */
+/* ------------------------------------------------------------------------- */
+body {
+    /*background-color: var(--root-color-background-green);*/
+}
+
+
+
+/* ------------------------------------------------------------------------- */
+/* MAIN CONTAINER */
+/* ------------------------------------------------------------------------- */
+
+/* Main container tabs */
+.ui.pointing.secondary.tabs.menu {
+    /*background-color: var(--root-color-background-light-blue);*/
+}
+
+/* White space */
+.ui.hidden.section.divider {
+}
+
+/* Custom main container */
+#main-container {
+    padding-bottom: 50vh;
+}
+
+/* Analysis background box */
+.ui.active.tab.segment.unselectable {
+    /*background-color: var(--root-color-background-light-blue);*/
+}
+
+/* Tracking background box */
+.ui.tab.segment {
+    /*background-color: var(--root-color-background-light-blue);*/
+}
+
+/* Message box */
+.ui.message {
+    /*background-color: var(--root-color-background-green);*/
+}
+
+/* Load images and folders buttons */
+.ui.basic.icon.button {
+    /*background-color: var(--root-color-background-green);
+    color: var(--root-color-text-white);*/
+}
+
+/* Load image button icon */
+.images.outline.icon {
+    /*color: var(--root-color-text-white);*/
+}
+
+/* Load folder button icon */
+.folder.outline.icon {
+    /*color: var(--root-color-text-white);
+    background-color: var(--root-color-background-dark-blue);*/
+}
+
+
+
+/* ------------------------------------------------------------------------- */
+/* TOP MENU */
+/* ------------------------------------------------------------------------- */
+
+/* Background container */
+.ui.container.menu.page-wide {
+    /*background-color: var(--root-color-background-light-blue);*/
+}
+
+/* Top menu logo */
+.header.item {
+    /*background-color: var(--root-color-background-light-blue);*/
+}
+
+/* Top menu settings button */
+#settings-button {
+    /*background-color: var(--root-color-background-light-blue);
+    color: var(--root-color-background-dark-blue);*/
+}
+
+/* RootDetector header text */
+.ui.header {
+    /*background-color: var(--root-color-background-green);
+    color: var(--root-color-background-dark-blue);*/
+}
+
+/* RootDetector sub header text */
+.sub.header {
+    /*background-color: var(--root-color-background-light-blue);
+    color: var(--root-color-text-white);*/
+    
+}
+
+/* ------------------------------------------------------------------------- */
+/* FILE TABLES */
+/* ------------------------------------------------------------------------- */
+
+.filetable-content {
+    /*background-color: var(--root-color-background-light-blue);*/
+}
+
+/* Dimmer overlay over filetable dropdown horizontal bar */
+.ui.dimmer {
+    /*background-color: var(--root-color-background-light-blue);*/
+}
+
+/* Image processing overlay box */
+.content.processing {
+    /*background-color: var(--root-color-background-light-blue);*/
+}
+
+/* Image processing overlay box (FAILED) */
+.content.failed {
+    /*background-color: var(--root-color-background-dark-blue);*/
+}
+
+
+/* Image processing loading icon box */
+.ui.inverted.icon.header {
+    /*background-color: var(--root-color-background-light-blue);
+    color: var(--root-color-background-dark-blue);*/
+}
+
+/* Spinner loading icon */
+.spinner.loading.icon {
+    /*color: var(--root-color-background-dark-blue);*/
+}
+
+/* Help popup */
+.ui.segment.flowing.popup {
+    /*background-color: var(--root-color-background-light-blue);
+    color: var(--root-color-background-dark-blue);*/
+    
+}
+
+/* Filetable dropdown horizontal bar */
+.ui.bottom.attached.secondary.icon.menu {
+    /*background-color: var(--root-color-background-green);*/
+}
+
+/* Play icon */
+.play.icon {
+    /*color: var(--root-color-background-dark-blue);*/
+}
+
+/* Eye icon */
+.eye.icon {
+    /*color: var(--root-color-background-dark-blue);*/
+}
+
+/* Check icon */
+.check.icon {
+    /*color: var(--root-color-background-dark-blue);*/
+}
+
+/* Square icon */
+.vector.square.icon {
+    /*color: var(--root-color-background-dark-blue);*/
+}
+
+/* Download icon */
+.download.icon {
+    /*color: var(--root-color-background-dark-blue);*/
+}
+
+/* Help icon */
+.help.icon {
+    /*color: var(--root-color-background-dark-blue);*/
+}
+
+/*  */
+.menu.view-menu {
+    /*background-color: var(--root-color-background-light-blue);
+    color: var(--root-color-background-dark-blue);*/
+}
+
+/* ------------------------------------------------------------------------- */
+/* TRAINING TAB */
+/* ------------------------------------------------------------------------- */
+/* Custom training tab that covers whole screen */
+#training-tab-wide {
+    display: grid;
+    height: 200px;
+    grid-template-columns: 100% 0%;
+    grid-column-gap: 5px;
+    align-items: start;
+} 
+
+/* ------------------------------------------------------------------------- */
+/* Image uppload buttons on training page */
+/* ------------------------------------------------------------------------- */
+#upload_anno_button {
+    width: 30%;
+    background-color: #bfe3ca;
+} 
+
+#upload_training_button {
+    width: 30%;
+    background-color: #bfe3ca;
+} 
+
+/* ------------------------------------------------------------------------- */
+/* Image uppload buttons on analysis page */
+/* ------------------------------------------------------------------------- */
+#analysis_input_images {
+    width: 30%;
+    background-color: #bfe3ca;
+} 
+
+#analysis_input_folder {
+    width: 30%;
+    background-color: #bfe3ca;
+} 
+
+/* --------------------------------------------------------------------------*/
+/* ------------------- START TRAINING BUTTON --------------------------------*/
+/* --------------------------------------------------------------------------*/
+#start-training-button {
+    color: rgb(45, 45, 45);
+    border: 2px solid #7ea78a;
+    background-color: #bfe3ca;
+}
+
+/* --------------------------------------------------------------------------*/
+/* ------------------- PROCESS ALL BUTTON -----------------------------------*/
+/* --------------------------------------------------------------------------*/
+#process-all-button {
+    color: #7ea78a;
+}

@@ -167,8 +167,8 @@ var RootTracking = new function() {
             $dimmer.dimmer({closable:true});
         } ).always( () => {
             $root.find('polyline.correction-line').remove()
-            delete_image(filename0);
-            delete_image(filename1);
+            //delete_image(filename0);
+            //delete_image(filename1);
         });
     }
 
@@ -181,6 +181,24 @@ var RootTracking = new function() {
     var set_tracking_data = function(filename0, filename1, data){
         console.log('Tracking results: ', data)
         GLOBAL.files[filename0].tracking_results[filename1] = data;
+
+        // Save tracking and detection model and date in statistics
+        GLOBAL.files[filename0].tracking_results[filename1].statistics['tracking_model'] = GLOBAL.settings.active_models.tracking
+        GLOBAL.files[filename0].tracking_results[filename1].statistics['detection_model'] = GLOBAL.settings.active_models.detection
+        // Check if exclusion mask is used
+        if ($('#exclusionmask-toggle').get(0).checked){
+            GLOBAL.files[filename0].tracking_results[filename1].statistics['exclusion_mask'] = GLOBAL.settings.active_models.exclusion_mask
+        }
+
+
+        var date = new Date();
+        date = [
+            date.getDate().toString().padStart(2,'0'),
+            (date.getMonth()+1).toString().padStart(2,'0'),
+            date.getFullYear()
+        ].join('/');
+        GLOBAL.files[filename0].tracking_results[filename1].statistics['date'] = date
+
         paint_matched_points(filename0, filename1, data.points0, data.points1);
 
         var $root    = $(`[filename0="${filename0}"][filename1="${filename1}"]`);

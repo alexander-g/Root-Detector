@@ -1,0 +1,43 @@
+{% import 'base/main_container.html' as base_main_container %}
+{% from   'roots/tracking_tab.html'  import tracking_tab %}
+{% from   'roots/training_tab.html'  import training_tab as roots_training_tab %}
+{% from   'roots/analysis_tab.html'  import analysis_container as analysis_container %}
+{% from   'roots/about_tab.html'     import about_tab %}
+{% from   'roots/model_selection_tab.html'   import model_selection_tab %}
+{% from   'roots/help_tab.html'      import help_tab %}
+{% from   'roots/contact_tab.html'     import contact_tab %}
+{% from   'roots/home_tab.html'      import home_tab as roots_home_tab %}
+
+
+{% macro contained_tabs() %}
+<div class="ui pointing tabs menu">
+    <a class="active item"        data-tab="home"> <strong>Home</strong>  </a>
+    <a class="item"               data-tab="analysis"> <strong>Analysis</strong>  </a>
+    <a class="item"               data-tab="training"> <strong>Training</strong>  </a>
+    <a class="item"               data-tab="modelselection"> <strong>Model Selection</strong>  </a>
+    <a class="item"               data-tab="help">    <strong> Help</strong> </a>
+    <a class="item"               data-tab="about"> <strong>About </strong> </a>
+    <a class="item"               data-tab="contact"> <strong> Contact us</strong> </a>
+</div>
+{% endmacro %}
+
+<!-- Places extra tabs in one macro, imported from other html files in same folder-->
+{% macro all_extra_tabs(app,Allinfo) %}
+    {{ about_tab() }}
+    {{ model_selection_tab(app,Allinfo) }}
+    {{ help_tab() }}
+    {{ contact_tab() }}
+    {{ roots_home_tab() }}
+{% endmacro %}
+
+{% macro navigation_menu(app,Allinfo) %}
+  {{ base_main_container.main_container(
+      app,
+      tabs          = contained_tabs(),
+      analysis_tab  = analysis_container(app),
+      training_tab  = roots_training_tab(app),
+      home_tab      = roots_home_tab(),
+      extra         = all_extra_tabs(app,Allinfo)) }}
+{% endmacro %}
+
+<!--Want to make the active tab bold so it's easier to identify which tab you're on-->

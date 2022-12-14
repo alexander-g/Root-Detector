@@ -26,5 +26,10 @@ RootDetection = class extends BaseDetection{
         var $result_overlay = $root.find(`img.overlay`)
         GLOBAL.App.ImageLoading.set_image_src($result_overlay, src)
     }
+
+    static click_analysis() {
+        $('.tabs .item[data-tab="analysis"]').click();
+        window.scrollTo(0, 0);
+    }
 }
 

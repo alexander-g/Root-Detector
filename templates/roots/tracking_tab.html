@@ -123,22 +123,30 @@
 {% macro tracking_tab() %}
 <!--------- MACRO tracking_tab() START---------->
 <div class="ui tab segment" data-tab="tracking"  style="padding:0">
+  <div class="ui message">
+    <h3>Upload images to analyze</h3>
+      Depending on what upload button you choose you can either select specific images or an folder containing all images. If uploaded images taken in the same setting under a different time is uploaded they should appear here.
+    <h3> Process images </h3>
+    The images can now be processed. You can either select to process all uploaded images, or scroll in the table and process single images.
+  </div>
+  
   {{ filetable_menu(
     callback_on_process_all     = "RootTracking.on_process_all",
     callback_on_download_all    = "RootTrackingDownload.on_download_all"
-  ) }}
-  <table class="ui unstackable celled table accordion" id="tracking-filetable" style="border:0px; margin:0px;">
-      <thead>
-          <tr>
-            <th colspan="2">No Image Pairs Loaded</th>
-          </tr>
-      </thead>
-      
-      <tbody>
-        {#   #tracking-item inserted from javascript here   #}
-      </tbody>
-  </table>
-  <script> $('#tracking-filetable.accordion').accordion({duration:0, onOpening:RootTracking.on_accordion_open}) </script>
+  )
+    }}
+    <table class="ui unstackable celled table accordion" id="tracking-filetable" style="border:0px; margin:0px;">
+        <thead>
+            <tr>
+                <th colspan="2">No Image Pairs Loaded</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            {#   #tracking-item inserted from javascript here   #}
+        </tbody>
+    </table>
+    <script>$('#tracking-filetable.accordion').accordion({ duration: 0, onOpening: RootTracking.on_accordion_open })</script>
 </div>
 
 {{ tracking_item_template() }}
